@@ -3,7 +3,7 @@ from . import models
 
 def films_list_view(request):
     if request.method == 'GET':
-        film = models.Film.objects.all().order_by('-id')
+        film = models.Films.objects.all().order_by('-id')
         context = {
             'film': film,
         }
@@ -14,7 +14,7 @@ def films_list_view(request):
 
 def film_detail_view(request, id):
     if request.method == 'GET':
-        film_id = get_object_or_404(models.Film, id=id)
+        film_id = get_object_or_404(models.Films, id=id)
         context = {
             'film_id': film_id,
         }

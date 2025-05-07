@@ -23,7 +23,7 @@
     <div class="card">
         <img src="{{ i.image.url }}"
             alt="{{ i.title }}">
-        <h3><a href="{% url 'film_detail' i.id %}">{{ i.title }}</a></h3>
+        <h3><a href="/film_list/{{ i.id }}/">{{ i.title }}</a></h3>
         <p>{{i.description}}</p>
         <div class="card-buttons">
             <button class="delete"><a href="#">Удалить</a></button>
