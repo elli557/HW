@@ -12,6 +12,7 @@ def films_list_view(request):
                     context=context
                     )
 
+# получение id и вывод detail
 def film_detail_view(request, id):
     if request.method == 'GET':
         film_id = get_object_or_404(models.Films, id=id)
