@@ -1,59 +1,121 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . import models, forms
 from django.http import HttpResponse
+from django.views import generic
 
 # получение id и вывод detail
-def film_detail_view(request, id):
-    if request.method == 'GET':
-        film_id = get_object_or_404(models.Films, id=id)
-        context = {
-            'film_id': film_id,
-        }
-        return render(request, 
-                    template_name='films/film_detail.html',
-                    context=context
-                    )
+class FilmsDetailView(generic.DetailView):
+    template_name = 'films/film_detail.html'
+
+    def get_object(self, **kwargs):
+        film_id = self.kwargs.get('id')
+        return get_object_or_404(models.Films, id=film_id)
+
+# def film_detail_view(request, id):
+#     if request.method == 'GET':
+#         film_id = get_object_or_404(models.Films, id=id)
+#         context = {
+#             'film_id': film_id,
+#         }
+#         return render(request, 
+#                     template_name='films/film_detail.html',
+#                     context=context
+#                     )
     
 # Create
-def create_film_view(request):
-    if request.method == 'POST':
-        form = forms.FilmsForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('film_list')
-    else:
-        form = forms.FilmsForm()
-    return render(request, template_name='films/create_film.html', context={'form': form})
+class CreateFilmsView(generic.CreateView):
+    template_name = 'films/create_films.html'
+    form_class = forms.FilmsForm
+    success_url = '/films_list/'
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(CreateFilmsView, self).form_valid(form=form)
+
+# def create_film_view(request):
+#     if request.method == 'POST':
+#         form = forms.FilmsForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('film_list')
+#     else:
+#         form = forms.FilmsForm()
+#     return render(request, template_name='films/create_film.html', context={'form': form})
+
 
 # Read
-def films_list_view(request):
-    if request.method == 'GET':
-        film = models.Films.objects.all().order_by('-id')
-        context = {
-            'film': film,
-        }
-        return render(request,
-                    template_name='films/films.html',
-                    context=context
-                    )
+class FilmsListView(generic.ListView):
+    template_name =  'films/films.html'
+    context_object_name = 'film'
+    model = models.Films
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('-id')
+    
+# def films_list_view(request):
+#     if request.method == 'GET':
+#         film = models.Films.objects.all().order_by('-id')
+#         context = {
+#             'film': film,
+#         }
+#         return render(request,
+#                     template_name='films/films.html',
+#                     context=context
+#                     )
     
 # Update
-def update_film_view(request,id):
-    film_id = get_object_or_404(models.Films, id=id)
-    if request.method == "POST":
-        form  = forms.FilmsForm(request.POST, instance=film_id)
-        if form.is_valid():
-            form.save()
-            return redirect('film_list')
-    else:
-        form = forms.FilmsForm(instance=film_id)
-    return render(request, template_name='films/update_film.html', context={
-        'form': form,
-        'film_id': film_id,
-        })
+class UpdateFilmsView(generic.UpdateView):
+    template_name = 'films/update_film.html'
+    form_class = forms.FilmsForm
+    success_url = '/film_list/'
+
+    def get_object(self,  **kwargs):
+        film_id = self.kwargs.get('id')
+        return get_object_or_404(models.Films, id=film_id)
+    
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(UpdateFilmsView, self).form_valid(form=form)
+
+# def update_film_view(request,id):
+#     film_id = get_object_or_404(models.Films, id=id)
+#     if request.method == "POST":
+#         form  = forms.FilmsForm(request.POST, instance=film_id)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('film_list')
+#     else:
+#         form = forms.FilmsForm(instance=film_id)
+#     return render(request, template_name='films/update_film.html', context={
+#         'form': form,
+#         'film_id': film_id,
+#         })
+
 
 # Delete
-def delete_film_view(request, id):
-    film_id = get_object_or_404(models.Films, id=id)
-    film_id.delete()
-    return redirect('film_list')
+class DeleteFilmsView(generic.DeleteView):
+    template_name = 'films/confirm_delete.html'
+    success_url = '/films_list/'
+
+    def get_object(self, **kwargs):
+        film_id = self.kwargs.get('id')
+        return get_object_or_404(models.Films, id=film_id)
+# def delete_film_view(request, id):
+#     film_id = get_object_or_404(models.Films, id=id)
+#     film_id.delete()
+#     return redirect('film_list')
+
+#search
+class SearchFilmsView(generic.ListView):
+    template_name = 'films/films.html'
+    context_object_name = 'film'
+    paginate_by = 5
+    model = models.Films
+
+    def get_queryset(self):
+        return self.model.objects.filter(title__icontains=self.request.GET.get('e'))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context

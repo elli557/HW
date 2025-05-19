@@ -26,7 +26,7 @@
         <h3><a href="/film_list/{{ i.id }}/">{{i.title}}</a></h3>
         <p>{{ i.description }}</p>
         <div class="card-buttons">
-            <button class="delete"><a href="{% url  'create_film' %}">Добавить</a></button>
+            <button class="add"><a href="{% url  'create_film' %}">Добавить</a></button>
             <button class="delete"><a href="/film_list/{{ i.id }}/delete/">Удалить</a></button>
             <button class="edit"><a href="/film_list/{{ i.id }}/update/">Изменить</a></button>
         </div>

@@ -47,6 +47,15 @@
     width: auto; /* Кнопки будут иметь свою естественную ширину */
 }
 
+.card-buttons .add {
+    background-color: #3ce74a;
+    color: white;
+}
+
+.card-buttons .add:hover {
+    background-color: #3ce74a34;
+}
+
 .card-buttons .delete {
     background-color: #e74c3c;
     color: white;
