@@ -113,9 +113,9 @@ class SearchFilmsView(generic.ListView):
     model = models.Films
 
     def get_queryset(self):
-        return self.model.objects.filter(title__icontains=self.request.GET.get('e'))
+        return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['e'] = self.request.GET.get('q')
+        context['q'] = self.request.GET.get('q')
         return context
