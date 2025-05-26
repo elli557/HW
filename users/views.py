@@ -22,7 +22,7 @@ class AuthLogoutView(LogoutView):
 
 class UserListView(ListView):
     template_name = 'users/user_list.html'
-    context_object_name = 'userr'
+    context_object_name = 'users'
     model = models.CustomUser
 
     def get_queryset(self):

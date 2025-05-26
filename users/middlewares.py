@@ -5,7 +5,6 @@ child_club = 'Детский клуб'
 teenager_club = 'Подростковый клуб'
 adult_club = 'Взрослый клуб'
 
-############
 class AgeClubMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.path == '/register/' and request.method == 'POST':
