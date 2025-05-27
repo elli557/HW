@@ -7,6 +7,7 @@ class KinobListView(generic.ListView):
     template_name = 'parser_films/parser_film_list.html'
     context_object_name = 'kinob'
     model = models.Parser_Kinob
+    paginate_by = 3
 
     def get_queryset(self):
         return self.model.objects.all()

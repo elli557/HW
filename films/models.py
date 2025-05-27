@@ -39,6 +39,9 @@ class Films(models.Model):
     description = models.TextField(verbose_name='Укажите описание фильма')
     trailer_url  = models.URLField(verbose_name='Ссылка на трейлер фильма', default='https://example.com')
     duration = models.PositiveIntegerField(verbose_name='Продолжительность', default=90, null=True)
+    views = models.PositiveIntegerField(
+        default=0, verbose_name="Количество просмотров", null=True
+    )  # Поле просмотров
     
     def __str__(self):
         return self.title

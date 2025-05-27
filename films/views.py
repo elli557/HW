@@ -2,14 +2,25 @@ from django.shortcuts import render, get_object_or_404, redirect
 from . import models, forms
 from django.http import HttpResponse
 from django.views import generic
+from django.db.models import F
 
 # получение id и вывод detail
 class FilmsDetailView(generic.DetailView):
+    model = models.Films
     template_name = 'films/film_detail.html'
+    pk_url_kwarg = 'id'
 
-    def get_object(self, **kwargs):
-        film_id = self.kwargs.get('id')
-        return get_object_or_404(models.Films, id=film_id)
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        film = self.object
+        viewed_films = request.session.get("viewed_films", [])
+        if film.id not in viewed_films:
+            film.views = F("views") + 1
+            film.save()
+            film.refresh_from_db()
+            viewed_films.append(film.id)
+            request.session["viewed_films"] = viewed_films
+        return response
 
 # def film_detail_view(request, id):
 #     if request.method == 'GET':

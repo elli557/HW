@@ -16,42 +16,37 @@
 <!-- Меню -->
 {% include 'components/header.html' %}
 
-<!-- о фильме подробнее-->
+<!-- О фильме подробнее -->
 <div class="film-detail">
     <div class="film-info">
-        <img src="{{ film_id.image.url }}"
-            alt="{{ film_id.title }}" class="film-poster">
+        <img src="{{ object.image.url }}"
+            alt="{{ object.title }}" class="film-poster">
         <div class="film-text">
-            <h1>{{ film_id.title }}</h1>
-            <p><strong>Дата выпуска:</strong> {{ film_id.create_at}}</p>
-            <p><strong>Жанр:</strong> {{ film_id.genre }}</p>
-            <p><strong>Директор:</strong> {{ film_id.director}}</p>
-            <p><strong>Описание:</strong> {{ film_id.description}}</p>
-            <p><strong>Продолжительность:</strong> {{film_id.duration}}</p>
+            <h1>{{ object.title }}</h1>
+            <p><strong>Дата выпуска:</strong> {{ object.create_at }}</p>
+            <p><strong>Жанр:</strong> {{ object.genre }}</p>
+            <p><strong>Автор:</strong> {{ object.author }}</p>
+            <p><strong>Описание:</strong> {{ object.description }}</p>
+            <span>{{ object.views }}</span> &nbsp;просмотров
         </div>
-            <iframe width="640" height="420" src="{{film_id.trailer_url}}" frameborder="0"></iframe>
-
+        <iframe width="640" height="420" src="{{ object.audio_book }}" frameborder="0"></iframe>
     </div>
 
-    <!--  Коменты -->
+    <!-- Комментарии -->
     <div class="comments">
         <h2>Комментарии</h2>
         <div class="comment-list">
-            <!--            цикл открытия-->
-            {% for i in film_id.reviews.all %}
+            {% for i in object.reviews.all %}
             <div class="comment">
-                <p><strong>{{ i.user_name }}</strong>  {{ i.text }}</p>
+                <p><strong>{{ i.user_name }}</strong> {{ i.text }}</p>
             </div>
             {% endfor %}
-            <!-- цикл закрытия -->
         </div>
     </div>
 </div>
 
-
 <!-- Футер -->
-{% include 'components/footer.html' %} 
-
+{% include 'components/footer.html' %}
 
 </body>
 </html>
