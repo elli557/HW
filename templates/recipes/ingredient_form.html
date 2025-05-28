@@ -1,0 +1,7 @@
+<h1>Добавить ингредиент</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">сохранить</button>
+</form>
+<a href="{% url 'recipe_detail' recipe_id %}">назад к рецепту</a>

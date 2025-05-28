@@ -1,0 +1,7 @@
+<h1>Удаление рецепта</h1>
+<p>Вы уверены, что хотите удалить рецепт "{{ object.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">да</button>
+    <a href="{% url 'recipe_detail' object.id %}">отмена</a>
+</form>

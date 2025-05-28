@@ -1,0 +1,12 @@
+<h1>Список рецептов</h1>
+<a href="{% url 'create_recipe' %}">Добавить рецепт</a>
+<ul>
+    {% for recipe in recipes %}
+        <li>
+            <a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.title }}</a>
+            ({{ recipe.ingredients.count }} ингредиентов)
+        </li>
+    {% empty %}
+        <li>Рецептов нет</li>
+    {% endfor %}
+</ul>
